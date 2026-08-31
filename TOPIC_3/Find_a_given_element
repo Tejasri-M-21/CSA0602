@@ -1,0 +1,21 @@
+//Sequential Search
+#include <stdio.h>
+int main() {
+    int arr[] = {12, 25, 8, 45, 32, 19, 50};
+    int n = 7, key = 32;
+    int i, comparisons = 0, found = 0;
+    for (i = 0; i < n; i++) {
+        comparisons++;
+        if (arr[i] == key) {
+            printf("Element found at position %d\n", i + 1);
+            printf("Number of comparisons = %d\n", comparisons);
+            found = 1;
+            break;
+        }
+    }
+    if (!found) {
+        printf("Element not found\n");
+        printf("Number of comparisons = %d\n", comparisons);
+    }
+    return 0;
+}
