@@ -1,0 +1,33 @@
+//Closest Pair and Time Complexity Analysis
+#include <stdio.h>
+#include <math.h>
+typedef struct {
+    double x,y;
+} Point;
+double euclideanDistance(Point a,Point b) {
+    return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+}
+void closestPair(Point p[],int n) {
+    int i,j,a=0,b=1;
+    double min=euclideanDistance(p[0],p[1]),d;
+    for(i=0;i<n;i++) {
+        for(j=i+1;j<n;j++) {
+            d=euclideanDistance(p[i],p[j]);
+            if(d<min) {
+                min=d;
+                a=i;
+                b=j;
+            }
+        }
+    }
+    printf("Closest pair: (%.1f, %.1f) - (%.1f, %.1f)\n",p[a].x,p[a].y,p[b].x,p[b].y);
+    printf("Minimum distance: %.6f\n",min);
+}
+int main() {
+    Point p[]={{10,0},{11,5},{5,3},{9,3.5},{15,3},{12.5,7},{6,6.5},{7.5,4.5}};
+    int n=8;
+    closestPair(p,n);
+    printf("Time Complexity: O(n^2)\n");
+    printf("Space Complexity: O(1) excluding input storage\n");
+    return 0;
+}
