@@ -1,0 +1,26 @@
+//Case-Insensitive Brute Force String Matching
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+int main() {
+    char text[] = "DataStructuresAndAlgorithms";
+    char pattern[] = "ALGORITHMS";
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int i, j, found = -1;
+    for (i = 0; i <= n - m; i++) {
+        for (j = 0; j < m; j++) {
+            if (tolower(text[i + j]) != tolower(pattern[j]))
+                break;
+        }
+        if (j == m) {
+            found = i;
+            break;
+        }
+    }
+    if (found != -1)
+        printf("Pattern found at position %d\n", found);
+    else
+        printf("Pattern not found\n");
+    return 0;
+}
