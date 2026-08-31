@@ -1,0 +1,32 @@
+//Brute Force String Matching - Successful and Unsuccessful Search
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char text[] = "PROGRAMMINGLAB";
+    char pattern1[] = "LAB";
+    char pattern2[] = "TEST";
+    char *patterns[] = {pattern1, pattern2};
+    int p, n, m, i, j, comparisons;
+    for (p = 0; p < 2; p++) {
+        n = strlen(text);
+        m = strlen(patterns[p]);
+        comparisons = 0;
+        printf("\nSearching for \"%s\":\n", patterns[p]);
+        for (i = 0; i <= n - m; i++) {
+            for (j = 0; j < m; j++) {
+                comparisons++;
+                if (text[i + j] != patterns[p][j])
+                    break;
+            }
+            if (j == m) {
+                printf("Successful search\n");
+                printf("Position = %d\n", i);
+                break;
+            }
+        }
+        if (i > n - m)
+            printf("Unsuccessful search\n");
+        printf("Comparison count = %d\n", comparisons);
+    }
+    return 0;
+}
