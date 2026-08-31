@@ -1,0 +1,23 @@
+//Find All Pattern Occurrences Using Brute Force
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char text[] = "BANANABANANA";
+    char pattern[] = "ANA";
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int i, j, count = 0;
+    printf("Occurrences at positions: ");
+    for (i = 0; i <= n - m; i++) {
+        for (j = 0; j < m; j++) {
+            if (text[i + j] != pattern[j])
+                break;
+        }
+        if (j == m) {
+            printf("%d ", i);
+            count++;
+        }
+    }
+    printf("\nTotal occurrences = %d\n", count);
+    return 0;
+}
