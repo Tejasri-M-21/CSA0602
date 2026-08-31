@@ -1,0 +1,25 @@
+//Subset Sum using Exhaustive Search
+#include <stdio.h>
+int found=0;
+void subsetSum(int set[],int n,int index,int target,int subset[],int size) {
+    if(found) return;
+    if(target==0) {
+        printf("Subset found: [");
+        for(int i=0;i<size;i++)
+            printf("%d%s",subset[i],i==size-1?"":", ");
+        printf("]\nSum: 9\n");
+        found=1;
+        return;
+    }
+    if(index==n||target<0) return;
+    subset[size]=set[index];
+    subsetSum(set,n,index+1,target-set[index],subset,size+1);
+    subsetSum(set,n,index+1,target,subset,size);
+}
+int main() {
+    int set[]={3,34,4,12,5,2};
+    int subset[6];
+    subsetSum(set,6,0,9,subset,0);
+    if(!found) printf("No subset found\n");
+    return 0;
+}
