@@ -1,0 +1,31 @@
+//Convex Hull using Basic Brute Force Method
+#include <stdio.h>
+typedef struct {
+    int x,y;
+} Point;
+int orientation(Point a,Point b,Point c) {
+    int value=(b.y-a.y)*(c.x-b.x)-(b.x-a.x)*(c.y-b.y);
+    if(value==0) return 0;
+    return value>0?1:2;
+}
+int main() {
+    Point p[]={{0,0},{1,1},{2,2},{0,2},{2,0}};
+    int n=5,i,j,k,valid;
+    printf("Convex Hull Points:\n");
+    for(i=0;i<n;i++) {
+        for(j=i+1;j<n;j++) {
+            valid=1;
+            for(k=0;k<n;k++) {
+                if(k==i||k==j) continue;
+                if(orientation(p[i],p[j],p[k])==1) {
+                    valid=0;
+                    break;
+                }
+            }
+            if(valid)
+                printf("(%d,%d) ",p[i].x,p[i].y);
+        }
+    }
+    printf("\n");
+    return 0;
+}
