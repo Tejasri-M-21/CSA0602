@@ -1,0 +1,29 @@
+//Brute Force String Matching - Case Analysis
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char text[] = "AAAAAAAAAB";
+    char pattern[] = "AAAAB";
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int i, j, comparisons = 0;
+    int found = 0;
+    for (i = 0; i <= n - m; i++) {
+        for (j = 0; j < m; j++) {
+            comparisons++;
+            if (text[i + j] != pattern[j])
+                break;
+        }
+        if (j == m) {
+            found = 1;
+            break;
+        }
+    }
+    if (found)
+        printf("Pattern found\n");
+    else
+        printf("Pattern not found\n");
+    printf("Number of comparisons = %d\n", comparisons);
+    printf("Search Type = Worst Case\n");
+    return 0;
+}
