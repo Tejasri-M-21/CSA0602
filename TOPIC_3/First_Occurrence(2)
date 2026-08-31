@@ -1,0 +1,27 @@
+//Brute Force String Matching - First Occurrence
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char text[] = "COMPUTERSCIENCE";
+    char pattern[] = "SCI";
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int i, j, comparisons = 0, found = -1;
+    for (i = 0; i <= n - m; i++) {
+        for (j = 0; j < m; j++) {
+            comparisons++;
+            if (text[i + j] != pattern[j])
+                break;
+        }
+        if (j == m) {
+            found = i;
+            break;
+        }
+    }
+    if (found != -1)
+        printf("First occurrence position = %d\n", found);
+    else
+        printf("Pattern not found\n");
+    printf("Number of comparisons = %d\n", comparisons);
+    return 0;
+}
