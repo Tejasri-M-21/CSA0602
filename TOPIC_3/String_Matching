@@ -1,0 +1,26 @@
+//Brute Force String Matching
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char text[] = "AABAACAADAABAABA";
+    char pattern[] = "AABA";
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int i, j, comparisons = 0, found = 0;
+    printf("Pattern occurs at positions: ");
+    for (i = 0; i <= n - m; i++) {
+        for (j = 0; j < m; j++) {
+            comparisons++;
+            if (text[i + j] != pattern[j])
+                break;
+        }
+        if (j == m) {
+            printf("%d ", i);
+            found = 1;
+        }
+    }
+    if (!found)
+        printf("None");
+    printf("\nTotal number of comparisons = %d\n", comparisons);
+    return 0;
+}
