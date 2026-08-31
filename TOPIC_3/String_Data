@@ -1,0 +1,18 @@
+//Sequential Search for String Data
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char names[6][20] = {"Anu", "Bala", "Charan", "Deepa", "Esha", "Farhan"};
+    char key[20] = "Deepa";
+    int n = 6, i, found = 0;
+    for (i = 0; i < n; i++) {
+        if (strcmp(names[i], key) == 0) {
+            printf("Name found at position %d\n", i + 1);
+            found = 1;
+            break;
+        }
+    }
+    if (!found)
+        printf("Name not found\n");
+    return 0;
+}
