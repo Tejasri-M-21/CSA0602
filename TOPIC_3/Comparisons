@@ -1,0 +1,20 @@
+//Sequential Search - Comparisons, Matches and Mismatches
+#include <stdio.h>
+int main() {
+    int arr[] = {3, 6, 9, 12, 15, 18, 21};
+    int n = 7, key = 15;
+    int i, comparisons = 0, matches = 0, mismatches = 0;
+    for (i = 0; i < n; i++) {
+        comparisons++;
+        if (arr[i] == key)
+            matches++;
+        else
+            mismatches++;
+        if (arr[i] == key)
+            break;
+    }
+    printf("Total comparisons = %d\n", comparisons);
+    printf("Total matches = %d\n", matches);
+    printf("Total mismatches = %d\n", mismatches);
+    return 0;
+}
