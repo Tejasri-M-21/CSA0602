@@ -1,0 +1,34 @@
+//Sequential Search Performance Analysis
+#include <stdio.h>
+int main() {
+    int arr[] = {45, 23, 67, 12, 89, 34, 56, 78, 90, 11, 29, 73, 18, 64, 37};
+    int keys[] = {73, 18, 100};
+    int n = 15, k = 3;
+    int i, j, comparisons, found;
+    for (j = 0; j < k; j++) {
+        comparisons = 0;
+        found = 0;
+        printf("\nSearching for %d:\n", keys[j]);
+        for (i = 0; i < n; i++) {
+            comparisons++;
+            printf("Comparison %d: %d with %d", comparisons, arr[i], keys[j]);
+            if (arr[i] == keys[j]) {
+                printf(" -> Match\n");
+                printf("Element found at position %d\n", i + 1);
+                found = 1;
+                break;
+            } else {
+                printf(" -> Mismatch\n");
+            }
+        }
+        if (!found)
+            printf("Element not found\n");
+        printf("Total comparisons = %d\n", comparisons);
+    }
+    printf("\nPerformance Analysis:\n");
+    printf("Best Case Complexity = O(1)\n");
+    printf("Average Case Complexity = O(n)\n");
+    printf("Worst Case Complexity = O(n)\n");
+    printf("Space Complexity = O(1)\n");
+    return 0;
+}
