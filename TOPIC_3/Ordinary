@@ -1,0 +1,39 @@
+//Sentinel Sequential Search vs Ordinary Sequential Search
+#include <stdio.h>
+int main() {
+    int arr[] = {14, 9, 22, 35, 18, 41, 27};
+    int n = 7, key = 18;
+    int i, comparisons1 = 0, comparisons2 = 0;
+    int found1 = -1, found2 = -1;
+    for (i = 0; i < n; i++) {
+        comparisons1++;
+        if (arr[i] == key) {
+            found1 = i + 1;
+            break;
+        }
+    }
+    int last = arr[n - 1];
+    arr[n - 1] = key;
+    i = 0;
+    while (arr[i] != key) {
+        comparisons2++;
+        i++;
+    }
+    comparisons2++;
+    arr[n - 1] = last;
+    if (i < n - 1 || arr[n - 1] == key)
+        found2 = i + 1;
+    printf("Ordinary Sequential Search:\n");
+    if (found1 != -1)
+        printf("Position found = %d\n", found1);
+    else
+        printf("Element not found\n");
+    printf("Comparison count = %d\n", comparisons1);
+    printf("\nSentinel Sequential Search:\n");
+    if (found2 != -1)
+        printf("Position found = %d\n", found2);
+    else
+        printf("Element not found\n");
+    printf("Comparison count = %d\n", comparisons2);
+    return 0;
+}
