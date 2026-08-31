@@ -1,0 +1,28 @@
+//Boundary Points Forming Convex Hull
+#include <stdio.h>
+typedef struct {
+    int x,y;
+} Point;
+int orientation(Point a,Point b,Point c) {
+    int v=(b.y-a.y)*(c.x-b.x)-(b.x-a.x)*(c.y-b.y);
+    if(v==0) return 0;
+    return v>0?1:2;
+}
+int main() {
+    Point p[]={{1,2},{3,1},{5,3},{4,6},{2,5}};
+    int n=5,l=0,current,next;
+    for(int i=1;i<n;i++)
+        if(p[i].x<p[l].x) l=i;
+    current=l;
+    printf("Convex Hull Points:\n");
+    do {
+        printf("(%d,%d) ",p[current].x,p[current].y);
+        next=(current+1)%n;
+        for(int i=0;i<n;i++)
+            if(orientation(p[current],p[i],p[next])==2)
+                next=i;
+        current=next;
+    } while(current!=l);
+    printf("\n");
+    return 0;
+}
