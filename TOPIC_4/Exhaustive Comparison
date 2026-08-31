@@ -1,0 +1,27 @@
+//Closest Pair using Exhaustive Comparison
+#include <stdio.h>
+#include <math.h>
+typedef struct {
+    int x,y;
+} Point;
+double distance(Point a,Point b) {
+    return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+}
+int main() {
+    Point p[]={{2,3},{5,4},{1,7},{8,9},{4,6}};
+    int n=5,i,j,a=0,b=1;
+    double min=distance(p[0],p[1]),d;
+    for(i=0;i<n;i++) {
+        for(j=i+1;j<n;j++) {
+            d=distance(p[i],p[j]);
+            if(d<min) {
+                min=d;
+                a=i;
+                b=j;
+            }
+        }
+    }
+    printf("Closest pair: (%d, %d) - (%d, %d)\n",p[a].x,p[a].y,p[b].x,p[b].y);
+    printf("Minimum distance: %.15f\n",min);
+    return 0;
+}
