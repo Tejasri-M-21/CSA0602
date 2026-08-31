@@ -1,0 +1,25 @@
+//Brute Force String Matching - Matches and Mismatches
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char text[] = "ABABABABAB";
+    char pattern[] = "ABAB";
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int i, j, comparisons = 0, matches = 0, mismatches = 0;
+    for (i = 0; i <= n - m; i++) {
+        for (j = 0; j < m; j++) {
+            comparisons++;
+            if (text[i + j] == pattern[j])
+                matches++;
+            else {
+                mismatches++;
+                break;
+            }
+        }
+    }
+    printf("Total character comparisons = %d\n", comparisons);
+    printf("Total matches = %d\n", matches);
+    printf("Total mismatches = %d\n", mismatches);
+    return 0;
+}
