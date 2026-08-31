@@ -1,0 +1,54 @@
+//0-1 Knapsack using Exhaustive Search
+#include <stdio.h>
+int total_value(int selected[],int values[],int n) {
+    int total=0;
+    for(int i=0;i<n;i++)
+        if(selected[i])
+            total+=values[i];
+    return total;
+}
+int is_feasible(int selected[],int weights[],int n,int capacity) {
+    int total=0;
+    for(int i=0;i<n;i++)
+        if(selected[i])
+            total+=weights[i];
+    return total<=capacity;
+}
+void knapsack(int weights[],int values[],int n,int capacity) {
+    int limit=1<<n,bestValue=0,bestMask=0;
+    for(int mask=0;mask<limit;mask++) {
+        int selected[10]={0};
+        for(int i=0;i<n;i++)
+            if(mask&(1<<i))
+                selected[i]=1;
+        if(is_feasible(selected,weights,n,capacity)) {
+            int value=total_value(selected,values,n);
+            if(value>bestValue) {
+                bestValue=value;
+                bestMask=mask;
+            }
+        }
+    }
+    printf("Optimal Selection: [");
+    int first=1;
+    for(int i=0;i<n;i++) {
+        if(bestMask&(1<<i)) {
+            if(!first) printf(", ");
+            printf("%d",i);
+            first=0;
+        }
+    }
+    printf("]\n");
+    printf("Total Value: %d\n",bestValue);
+}
+int main() {
+    int weights1[]={2,3,1};
+    int values1[]={4,5,3};
+    int weights2[]={1,2,3,4};
+    int values2[]={2,4,6,3};
+    printf("Test Case 1:\n");
+    knapsack(weights1,values1,3,4);
+    printf("\nTest Case 2:\n");
+    knapsack(weights2,values2,4,6);
+    return 0;
+}
