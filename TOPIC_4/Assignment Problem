@@ -1,0 +1,47 @@
+//Assignment Problem using Exhaustive Search
+#include <stdio.h>
+#include <limits.h>
+void swap(int *a,int *b) {
+    int t=*a;
+    *a=*b;
+    *b=t;
+}
+int total_cost(int assignment[],int cost[10][10],int n) {
+    int total=0;
+    for(int i=0;i<n;i++)
+        total+=cost[i][assignment[i]];
+    return total;
+}
+void permute(int assignment[],int start,int n,int cost[10][10],int *min,int best[]) {
+    if(start==n) {
+        int total=total_cost(assignment,cost,n);
+        if(total<*min) {
+            *min=total;
+            for(int i=0;i<n;i++) best[i]=assignment[i];
+        }
+        return;
+    }
+    for(int i=start;i<n;i++) {
+        swap(&assignment[start],&assignment[i]);
+        permute(assignment,start+1,n,cost,min,best);
+        swap(&assignment[start],&assignment[i]);
+    }
+}
+void assignment_problem(int cost[10][10],int n) {
+    int assignment[10],best[10],min=INT_MAX;
+    for(int i=0;i<n;i++) assignment[i]=i;
+    permute(assignment,0,n,cost,&min,best);
+    printf("Optimal Assignment: ");
+    for(int i=0;i<n;i++)
+        printf("(worker %d, task %d) ",i+1,best[i]+1);
+    printf("\nTotal Cost: %d\n",min);
+}
+int main() {
+    int cost1[10][10]={{3,10,7},{8,5,12},{4,6,9}};
+    int cost2[10][10]={{15,9,4},{8,7,18},{6,12,11}};
+    printf("Test Case 1:\n");
+    assignment_problem(cost1,3);
+    printf("\nTest Case 2:\n");
+    assignment_problem(cost2,3);
+    return 0;
+}
