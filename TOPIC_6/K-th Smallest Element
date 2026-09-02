@@ -1,0 +1,53 @@
+// Question 11: K-th Smallest Element using Quick Sort Partition
+#include <stdio.h>
+
+int partition(int a[], int low, int high) {
+    int pivot = a[high], i = low, temp;
+
+    for (int j = low; j < high; j++) {
+        if (a[j] <= pivot) {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+            i++;
+        }
+    }
+
+    temp = a[i];
+    a[i] = a[high];
+    a[high] = temp;
+
+    return i;
+}
+
+int kthSmallest(int a[], int low, int high, int k) {
+    int p;
+
+    if (low <= high) {
+        p = partition(a, low, high);
+
+        if (p == k - 1)
+            return a[p];
+        else if (p > k - 1)
+            return kthSmallest(a, low, p - 1, k);
+        else
+            return kthSmallest(a, p + 1, high, k);
+    }
+
+    return -1;
+}
+
+int main() {
+    int n, a[100], k;
+
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+
+    scanf("%d", &k);
+
+    printf("%d", kthSmallest(a, 0, n - 1, k));
+
+    return 0;
+}
