@@ -1,0 +1,47 @@
+INF = float('inf')
+
+
+def graph_diameter(graph):
+    n = len(graph)
+
+    # Create a copy of the graph
+    dist = [row[:] for row in graph]
+
+    # Floyd-Warshall Algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(
+                    dist[i][j],
+                    dist[i][k] + dist[k][j]
+                )
+
+    # Find the maximum shortest-path distance
+    diameter = 0
+
+    for i in range(n):
+        for j in range(n):
+            if dist[i][j] != INF:
+                diameter = max(diameter, dist[i][j])
+
+    return diameter
+
+
+# Example 1
+graph = [
+    [0, 2, INF],
+    [2, 0, 3],
+    [INF, 3, 0]
+]
+
+print("Example 1 Output:", graph_diameter(graph))
+
+
+# Example 2
+graph = [
+    [0, 1, 4],
+    [1, 0, 2],
+    [4, 2, 0]
+]
+
+print("Example 2 Output:", graph_diameter(graph))
