@@ -1,0 +1,75 @@
+// Question 12: Performance Data Collection for Graph Plotting
+#include <stdio.h>
+
+int mergeCount, quickCount;
+
+void merge(int a[], int l, int m, int h) {
+    int t[100], i = l, j = m + 1, k = 0;
+
+    while (i <= m && j <= h) {
+        mergeCount++;
+        if (a[i] <= a[j])
+            t[k++] = a[i++];
+        else
+            t[k++] = a[j++];
+    }
+
+    while (i <= m) t[k++] = a[i++];
+    while (j <= h) t[k++] = a[j++];
+
+    for (i = l, k = 0; i <= h; i++)
+        a[i] = t[k++];
+}
+
+void mergeSort(int a[], int l, int h) {
+    if (l < h) {
+        int m = (l + h) / 2;
+        mergeSort(a, l, m);
+        mergeSort(a, m + 1, h);
+        merge(a, l, m, h);
+    }
+}
+
+int partition(int a[], int l, int h) {
+    int p = a[h], i = l - 1, t;
+
+    for (int j = l; j < h; j++) {
+        quickCount++;
+        if (a[j] <= p) {
+            i++;
+            t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+    }
+
+    t = a[i + 1]; a[i + 1] = a[h]; a[h] = t;
+    return i + 1;
+}
+
+void quickSort(int a[], int l, int h) {
+    if (l < h) {
+        int p = partition(a, l, h);
+        quickSort(a, l, p - 1);
+        quickSort(a, p + 1, h);
+    }
+}
+
+int main() {
+    int n, a[100], b[100];
+
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &a[i]);
+        b[i] = a[i];
+    }
+
+    mergeCount = quickCount = 0;
+
+    mergeSort(a, 0, n - 1);
+    quickSort(b, 0, n - 1);
+
+    printf("Merge Comparisons : %d\n", mergeCount);
+    printf("Quick Comparisons : %d", quickCount);
+
+    return 0;
+}
