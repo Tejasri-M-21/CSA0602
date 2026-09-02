@@ -1,0 +1,21 @@
+# Question 3: Non-Square / Padded Matrices
+def standard(A,B):
+    return [[sum(A[i][k]*B[k][j] for k in range(len(B)))
+             for j in range(len(B[0]))] for i in range(len(A))]
+
+def strassen_arbitrary(A,B):
+    r, m, c = len(A), len(B), len(B[0])
+    n = max(r,m,c)
+    p = 1
+    while p < n:
+        p *= 2
+
+    AA = [row + [0]*(p-m) for row in A] + [[0]*p for _ in range(p-r)]
+    BB = [row + [0]*(p-c) for row in B] + [[0]*p for _ in range(p-m)]
+
+    C = strassen(AA,BB)
+    return [row[:c] for row in C[:r]]
+
+A = [[1,2,3],[4,5,6]]
+B = [[7,8],[9,10],[11,12]]
+print(strassen_arbitrary(A,B))
