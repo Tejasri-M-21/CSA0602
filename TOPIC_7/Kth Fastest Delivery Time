@@ -1,0 +1,6 @@
+# Question 5: Kth Fastest Delivery Time
+def kth_smallest_delivery_time(a,k):
+    return median_of_medians(a,k)
+
+a=[45,30,60,25,50,40,35,55,20,65]
+print(kth_smallest_delivery_time(a,0))
