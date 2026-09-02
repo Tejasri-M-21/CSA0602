@@ -1,0 +1,20 @@
+def min_coins(coins, amount):
+    # Create DP array
+    dp = [float('inf')] * (amount + 1)
+
+    # 0 coins are needed to make amount 0
+    dp[0] = 0
+
+    # Calculate minimum coins for each amount
+    for i in range(1, amount + 1):
+        for c in coins:
+            if c <= i:
+                dp[i] = min(dp[i], dp[i - c] + 1)
+
+    return dp[amount]
+
+
+coins = [1, 2, 5]
+amount = 11
+
+print("Minimum Coins =", min_coins(coins, amount))
