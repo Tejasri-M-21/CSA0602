@@ -1,0 +1,53 @@
+def max_reachability(graph):
+    n = len(graph)
+
+    # Create a copy of the graph
+    reach = [row[:] for row in graph]
+
+    # Warshall's Algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                reach[i][j] = (
+                    reach[i][j] or
+                    (reach[i][k] and reach[k][j])
+                )
+
+    # Find vertex with maximum reachable vertices
+    max_count = -1
+    result = 0
+
+    for i in range(n):
+        count = 0
+
+        for j in range(n):
+            if i != j and reach[i][j]:
+                count += 1
+
+        # Keep the smallest index in case of a tie
+        if count > max_count:
+            max_count = count
+            result = i
+
+    return result
+
+
+# Example 1
+graph = [
+    [0, 1, 1, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1],
+    [0, 0, 0, 0]
+]
+
+print("Example 1 Output:", max_reachability(graph))
+
+
+# Example 2
+graph = [
+    [0, 1, 0],
+    [0, 0, 1],
+    [1, 0, 0]
+]
+
+print("Example 2 Output:", max_reachability(graph))
