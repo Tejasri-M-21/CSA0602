@@ -1,0 +1,46 @@
+def detect_negative_cycle(vertices, edges):
+    # Initialize distances
+    distance = [0] * vertices
+
+    # Relax all edges V-1 times
+    for _ in range(vertices - 1):
+        for u, v, weight in edges:
+            if distance[u] + weight < distance[v]:
+                distance[v] = distance[u] + weight
+
+    # Check for a negative weight cycle
+    for u, v, weight in edges:
+        if distance[u] + weight < distance[v]:
+            return True
+
+    return False
+
+
+# Example 1
+vertices = 4
+edges = [
+    (0, 1, 1),
+    (1, 2, -1),
+    (2, 3, -1),
+    (3, 0, -1)
+]
+
+if detect_negative_cycle(vertices, edges):
+    print("Negative Weight Cycle Exists")
+else:
+    print("No Negative Weight Cycle")
+
+
+# Example 2
+vertices = 4
+edges = [
+    (0, 1, 4),
+    (0, 2, 5),
+    (1, 2, -2),
+    (2, 3, 3)
+]
+
+if detect_negative_cycle(vertices, edges):
+    print("Negative Weight Cycle Exists")
+else:
+    print("No Negative Weight Cycle")
