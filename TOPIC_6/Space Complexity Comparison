@@ -1,0 +1,89 @@
+// Question 10: Space Complexity Comparison (Merge vs Quick Sort)
+#include <stdio.h>
+
+int mergeSpace = 0, quickSpace = 0;
+
+void merge(int a[], int low, int mid, int high) {
+    int temp[100];
+    mergeSpace += (high - low + 1) * sizeof(int);
+
+    int i = low, j = mid + 1, k = 0;
+
+    while (i <= mid && j <= high) {
+        if (a[i] <= a[j])
+            temp[k++] = a[i++];
+        else
+            temp[k++] = a[j++];
+    }
+
+    while (i <= mid)
+        temp[k++] = a[i++];
+
+    while (j <= high)
+        temp[k++] = a[j++];
+
+    for (i = low, k = 0; i <= high; i++, k++)
+        a[i] = temp[k];
+}
+
+void mergeSort(int a[], int low, int high) {
+    if (low < high) {
+        int mid = (low + high) / 2;
+        mergeSort(a, low, mid);
+        mergeSort(a, mid + 1, high);
+        merge(a, low, mid, high);
+    }
+}
+
+int partition(int a[], int low, int high) {
+    int pivot = a[high], i = low - 1, temp;
+
+    for (int j = low; j < high; j++) {
+        if (a[j] <= pivot) {
+            i++;
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+        }
+    }
+
+    temp = a[i + 1];
+    a[i + 1] = a[high];
+    a[high] = temp;
+
+    return i + 1;
+}
+
+void quickSort(int a[], int low, int high, int depth) {
+    if (depth * sizeof(int) > quickSpace)
+        quickSpace = depth * sizeof(int);
+
+    if (low < high) {
+        int p = partition(a, low, high);
+        quickSort(a, low, p - 1, depth + 1);
+        quickSort(a, p + 1, high, depth + 1);
+    }
+}
+
+int main() {
+    int n, a[100], b[100];
+
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &a[i]);
+        b[i] = a[i];
+    }
+
+    mergeSort(a, 0, n - 1);
+    quickSort(b, 0, n - 1, 1);
+
+    printf("Sorted : ");
+    for (int i = 0; i < n; i++)
+        printf("%d ", a[i]);
+
+    printf("\nMerge Space : ~%d bytes", mergeSpace);
+    printf("\nQuick Space : ~%d bytes", quickSpace);
+
+    return 0;
+}
