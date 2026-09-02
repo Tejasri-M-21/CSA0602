@@ -1,0 +1,48 @@
+def count_reachable(graph, source):
+    n = len(graph)
+
+    # Create a copy of the graph
+    reach = [row[:] for row in graph]
+
+    # Warshall's Algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                reach[i][j] = (
+                    reach[i][j] or
+                    (reach[i][k] and reach[k][j])
+                )
+
+    # Count reachable vertices excluding source
+    count = 0
+
+    for j in range(n):
+        if j != source and reach[source][j]:
+            count += 1
+
+    return count
+
+
+# Example 1
+graph = [
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1],
+    [0, 0, 0, 0]
+]
+
+source = 0
+
+print("Example 1 Output:", count_reachable(graph, source))
+
+
+# Example 2
+graph = [
+    [0, 1, 1],
+    [0, 0, 1],
+    [1, 0, 0]
+]
+
+source = 1
+
+print("Example 2 Output:", count_reachable(graph, source))
