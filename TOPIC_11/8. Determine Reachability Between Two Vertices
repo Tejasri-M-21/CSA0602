@@ -1,0 +1,46 @@
+def warshall(graph, u, v):
+    n = len(graph)
+
+    # Create a copy of the graph
+    reach = [row[:] for row in graph]
+
+    # Warshall's Algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                reach[i][j] = (
+                    reach[i][j] or
+                    (reach[i][k] and reach[k][j])
+                )
+
+    # Check whether a path exists from u to v
+    if reach[u][v]:
+        return "Path Exists"
+    else:
+        return "Path Does Not Exist"
+
+
+# Example 1
+graph = [
+    [0, 1, 0],
+    [0, 0, 1],
+    [0, 0, 0]
+]
+
+u = 0
+v = 2
+
+print("Example 1 Output:", warshall(graph, u, v))
+
+
+# Example 2
+graph = [
+    [0, 1, 0],
+    [0, 0, 0],
+    [1, 0, 0]
+]
+
+u = 1
+v = 2
+
+print("Example 2 Output:", warshall(graph, u, v))
