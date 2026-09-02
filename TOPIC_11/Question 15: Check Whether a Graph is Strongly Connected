@@ -1,0 +1,48 @@
+def is_strongly_connected(graph):
+    n = len(graph)
+
+    # Copy the graph
+    reach = [row[:] for row in graph]
+
+    # Warshall's Algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                reach[i][j] = (
+                    reach[i][j] or
+                    (reach[i][k] and reach[k][j])
+                )
+
+    # Check whether every vertex can reach every other vertex
+    for i in range(n):
+        for j in range(n):
+            if i != j and not reach[i][j]:
+                return False
+
+    return True
+
+
+# Example 1
+graph1 = [
+    [0, 1, 0],
+    [0, 0, 1],
+    [1, 0, 0]
+]
+
+if is_strongly_connected(graph1):
+    print("Example 1 Output: Strongly Connected")
+else:
+    print("Example 1 Output: Not Strongly Connected")
+
+
+# Example 2
+graph2 = [
+    [0, 1, 0],
+    [0, 0, 1],
+    [0, 0, 0]
+]
+
+if is_strongly_connected(graph2):
+    print("Example 2 Output: Strongly Connected")
+else:
+    print("Example 2 Output: Not Strongly Connected")
