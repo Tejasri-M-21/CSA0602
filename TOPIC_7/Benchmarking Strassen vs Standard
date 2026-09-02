@@ -1,0 +1,26 @@
+# Question 4: Benchmarking Strassen vs Standard
+import random
+import time
+
+def standard(A,B):
+    n = len(A)
+    return [[sum(A[i][k]*B[k][j] for k in range(n)) for j in range(n)]
+            for i in range(n)]
+
+def random_matrix(n):
+    return [[random.randint(1,9) for _ in range(n)] for _ in range(n)]
+
+def benchmark(n):
+    A, B = random_matrix(n), random_matrix(n)
+
+    t = time.time()
+    standard(A,B)
+    std = time.time() - t
+
+    t = time.time()
+    strassen(A,B)
+    s = time.time() - t
+
+    return std, s
+
+print(benchmark(16))
