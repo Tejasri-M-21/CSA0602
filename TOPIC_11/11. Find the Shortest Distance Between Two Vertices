@@ -1,0 +1,50 @@
+INF = float('inf')
+
+
+def shortest_distance(graph, u, v):
+    n = len(graph)
+
+    # Create a copy of the graph
+    dist = [row[:] for row in graph]
+
+    # Floyd-Warshall Algorithm
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(
+                    dist[i][j],
+                    dist[i][k] + dist[k][j]
+                )
+
+    # Return shortest distance from u to v
+    if dist[u][v] == INF:
+        return -1
+
+    return dist[u][v]
+
+
+# Example 1
+graph = [
+    [0, 3, INF, 7],
+    [8, 0, 2, INF],
+    [5, INF, 0, 1],
+    [2, INF, INF, 0]
+]
+
+u = 0
+v = 3
+
+print("Example 1 Output:", shortest_distance(graph, u, v))
+
+
+# Example 2
+graph = [
+    [0, 4, INF],
+    [INF, 0, 6],
+    [2, INF, 0]
+]
+
+u = 2
+v = 1
+
+print("Example 2 Output:", shortest_distance(graph, u, v))
