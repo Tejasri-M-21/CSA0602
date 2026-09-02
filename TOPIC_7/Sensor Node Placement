@@ -1,0 +1,7 @@
+# Question 3: Sensor Node Placement
+def check_spacing(points,safe):
+    pair,d=closest_pair(points)
+    return d>=safe,pair,d
+
+nodes=[(0,0),(10,10),(10.5,10.2),(30,40),(31,41)]
+print(check_spacing(nodes,1.0))
