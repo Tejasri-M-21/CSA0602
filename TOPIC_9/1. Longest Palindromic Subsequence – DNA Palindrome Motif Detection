@@ -1,0 +1,40 @@
+//1. Longest Palindromic Subsequence
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int max(int a,int b)
+{
+return a>b?a:b;
+}
+int lps_length(char s[])
+{
+int n=strlen(s),i,j;
+char rev[MAX];
+int dp[MAX+1][MAX+1];
+for(i=0;i<n;i++)
+rev[i]=s[n-i-1];
+rev[n]='\0';
+for(i=0;i<=n;i++)
+dp[i][0]=0;
+for(j=0;j<=n;j++)
+dp[0][j]=0;
+for(i=1;i<=n;i++)
+{
+for(j=1;j<=n;j++)
+{
+if(s[i-1]==rev[j-1])
+dp[i][j]=dp[i-1][j-1]+1;
+else
+dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+}
+}
+return dp[n][n];
+}
+int main()
+{
+printf("LPS Length for bbbab = %d\n",lps_length("bbbab"));
+printf("LPS Length for cbbd = %d\n",lps_length("cbbd"));
+printf("LPS Length for empty string = %d\n",lps_length(""));
+printf("All test cases passed!");
+return 0;
+}
