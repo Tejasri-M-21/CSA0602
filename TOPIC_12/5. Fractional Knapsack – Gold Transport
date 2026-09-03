@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+struct Item {
+    float weight;
+    float profit;
+    float ratio;
+};
+
+int main() {
+    struct Item items[] = {
+        {5, 30, 0},
+        {10, 40, 0},
+        {15, 45, 0}
+    };
+
+    int n = 3;
+    float capacity = 20;
+    float maxProfit = 0;
+
+    // Calculate profit/weight ratio
+    for (int i = 0; i < n; i++) {
+        items[i].ratio = items[i].profit / items[i].weight;
+    }
+
+    // Sort by profit/weight ratio in descending order
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (items[i].ratio < items[j].ratio) {
+                struct Item temp = items[i];
+                items[i] = items[j];
+                items[j] = temp;
+            }
+        }
+    }
+
+    // Select items
+    for (int i = 0; i < n; i++) {
+        if (capacity >= items[i].weight) {
+            capacity -= items[i].weight;
+            maxProfit += items[i].profit;
+        } else {
+            maxProfit += items[i].ratio * capacity;
+            capacity = 0;
+            break;
+        }
+    }
+
+    printf("Maximum profit = %.0f\n", maxProfit);
+
+    return 0;
+}
