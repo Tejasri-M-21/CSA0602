@@ -1,0 +1,72 @@
+import math
+
+
+def prim_matrix(graph):
+    n = len(graph)
+
+    # Key value for each vertex
+    key = [math.inf] * n
+
+    # Store parent of each vertex
+    parent = [-1] * n
+
+    # Track vertices already included in MST
+    in_mst = [False] * n
+
+    # Start Prim's Algorithm from vertex 0
+    key[0] = 0
+
+    for _ in range(n):
+
+        # Find the vertex with minimum key
+        min_value = math.inf
+        u = -1
+
+        for v in range(n):
+            if not in_mst[v] and key[v] < min_value:
+                min_value = key[v]
+                u = v
+
+        # Include vertex in MST
+        in_mst[u] = True
+
+        # Update keys of adjacent vertices
+        for v in range(n):
+            weight = graph[u][v]
+
+            if weight != 0 and not in_mst[v] and weight < key[v]:
+                key[v] = weight
+                parent[v] = u
+
+    # Print parent array
+    print("parent[]:", parent)
+
+    # Print MST edges and calculate weight
+    total_weight = 0
+
+    print("MST edges:", end=" ")
+
+    for v in range(1, n):
+        u = parent[v]
+        weight = graph[u][v]
+
+        print(f"({u},{v},{weight})", end="")
+        total_weight += weight
+
+        if v != n - 1:
+            print(",", end="")
+
+    print()
+    print("Total weight:", total_weight)
+
+
+# Input adjacency matrix
+graph = [
+    [0, 2, 0, 6, 0],
+    [2, 0, 3, 8, 5],
+    [0, 3, 0, 0, 7],
+    [6, 8, 0, 0, 9],
+    [0, 5, 7, 9, 0]
+]
+
+prim_matrix(graph)
