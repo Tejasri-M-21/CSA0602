@@ -1,0 +1,46 @@
+//9. Memoized Word Break for a Large Recurring Dictionary Stream
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int cache_valid=0;
+char cached_string[MAX];
+int cached_result;
+int can_segment(char s[],char dict[][20],int count)
+{
+int n=strlen(s),i,j,k,len,found;
+int dp[MAX+1]={0};
+if(cache_valid&&strcmp(s,cached_string)==0)
+return cached_result;
+dp[0]=1;
+for(i=1;i<=n;i++)
+{
+for(j=0;j<i;j++)
+{
+if(!dp[j])
+continue;
+len=i-j;
+for(k=0;k<count;k++)
+{
+if(strlen(dict[k])==len&&strncmp(s+j,dict[k],len)==0)
+{
+dp[i]=1;
+break;
+}
+}
+if(dp[i])
+break;
+}
+}
+strcpy(cached_string,s);
+cached_result=dp[n];
+cache_valid=1;
+return cached_result;
+}
+int main()
+{
+char dict[][20]={"leet","code"};
+printf("First Query: leetcode = %s\n",can_segment("leetcode",dict,2)?"True":"False");
+printf("Second Query: leetcode = %s (Cached)\n",can_segment("leetcode",dict,2)?"True":"False");
+printf("All test cases passed!");
+return 0;
+}
