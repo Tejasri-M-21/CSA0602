@@ -1,0 +1,64 @@
+//6. Reconstructing the Actual Subsequence for a Puzzle App
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int max(int a,int b)
+{
+return a>b?a:b;
+}
+void reconstruct_lps(char s[],char result[])
+{
+int n=strlen(s),i,j,left=0,right=0,k;
+int dp[MAX][MAX];
+if(n==0)
+{
+result[0]='\0';
+return;
+}
+for(i=0;i<n;i++)
+dp[i][i]=1;
+for(i=n-2;i>=0;i--)
+{
+for(j=i+1;j<n;j++)
+{
+if(s[i]==s[j])
+dp[i][j]=dp[i+1][j-1]+2;
+else
+dp[i][j]=max(dp[i+1][j],dp[i][j-1]);
+}
+}
+i=0;
+j=n-1;
+k=dp[0][n-1];
+right=k-1;
+while(i<=j)
+{
+if(i==j)
+{
+result[left]=s[i];
+break;
+}
+if(s[i]==s[j])
+{
+result[left++]=s[i];
+result[right--]=s[j];
+i++;
+j--;
+}
+else if(dp[i+1][j]>=dp[i][j-1])
+i++;
+else
+j--;
+}
+result[k]='\0';
+}
+int main()
+{
+char result1[MAX],result2[MAX];
+reconstruct_lps("bbbab",result1);
+reconstruct_lps("cbbd",result2);
+printf("LPS of bbbab = %s\n",result1);
+printf("LPS of cbbd = %s\n",result2);
+printf("All test cases passed!");
+return 0;
+}
