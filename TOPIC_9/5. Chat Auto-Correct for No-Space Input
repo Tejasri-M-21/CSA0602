@@ -1,0 +1,73 @@
+//5. Chat Auto-Correct for No-Space Input
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int suggest_spacing(char s[],char dict[][20],int count,char result[])
+{
+int n=strlen(s),i,j,k,len,found,pos;
+int dp[MAX+1]={0},parent[MAX+1];
+dp[0]=1;
+for(i=1;i<=n;i++)
+{
+for(j=0;j<i;j++)
+{
+if(!dp[j])
+continue;
+len=i-j;
+found=0;
+for(k=0;k<count;k++)
+{
+if(strlen(dict[k])==len&&strncmp(s+j,dict[k],len)==0)
+{
+found=1;
+break;
+}
+}
+if(found)
+{
+dp[i]=1;
+parent[i]=j;
+break;
+}
+}
+}
+if(!dp[n])
+return 0;
+char words[MAX][20];
+int count_words=0;
+pos=n;
+while(pos>0)
+{
+int start=parent[pos];
+strncpy(words[count_words],s+start,pos-start);
+words[count_words][pos-start]='\0';
+count_words++;
+pos=start;
+}
+int r=0;
+for(i=count_words-1;i>=0;i--)
+{
+for(j=0;words[i][j]!='\0';j++)
+result[r++]=words[i][j];
+if(i>0)
+result[r++]=' ';
+}
+result[r]='\0';
+return 1;
+}
+int main()
+{
+char d1[][20]={"leet","code"};
+char d2[][20]={"cats","dog","sand","and","cat"};
+char result[MAX];
+if(suggest_spacing("leetcode",d1,2,result))
+printf("leetcode = %s\n",result);
+else
+printf("leetcode = None\n");
+if(suggest_spacing("catsandog",d2,5,result))
+printf("catsandog = %s\n",result);
+else
+printf("catsandog = None\n");
+printf("All test cases passed!");
+return 0;
+}
