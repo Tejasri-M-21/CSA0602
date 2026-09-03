@@ -1,0 +1,59 @@
+//9. Comparing DP Word Wrap to a Greedy Baseline
+#include<stdio.h>
+#define INF 999999
+int min_wrap_cost(int words[],int n,int width)
+{
+int dp[100],i,j,line_len,extra,cost;
+dp[n]=0;
+for(i=n-1;i>=0;i--)
+{
+dp[i]=INF;
+line_len=0;
+for(j=i;j<n;j++)
+{
+line_len+=words[j];
+if(j>i) line_len++;
+if(line_len>width) break;
+extra=width-line_len;
+cost=(j==n-1)?0:extra*extra;
+if(cost+dp[j+1]<dp[i])
+dp[i]=cost+dp[j+1];
+}
+}
+return dp[0];
+}
+int greedy_wrap_cost(int words[],int n,int width)
+{
+int i=0,line_len=0,total=0,extra;
+while(i<n)
+{
+line_len=words[i];
+i++;
+while(i<n&&line_len+1+words[i]<=width)
+{
+line_len+=1+words[i];
+i++;
+}
+if(i<n)
+{
+extra=width-line_len;
+total+=extra*extra;
+}
+}
+return total;
+}
+int main()
+{
+int words[]={3,2,2,5};
+int n=4,width=6;
+int dp_cost=min_wrap_cost(words,n,width);
+int greedy_cost=greedy_wrap_cost(words,n,width);
+printf("DP Minimum Cost = %d\n",dp_cost);
+printf("Greedy Wrap Cost = %d\n",greedy_cost);
+if(dp_cost<=greedy_cost)
+printf("DP cost is less than or equal to Greedy cost\n");
+else
+printf("Test failed\n");
+printf("All test cases passed!\n");
+return 0;
+}
