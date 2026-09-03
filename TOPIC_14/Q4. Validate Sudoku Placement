@@ -1,0 +1,47 @@
+def is_safe(board, row, col, num):
+    # Check row
+    for j in range(9):
+        if board[row][j] == num:
+            return False
+
+    # Check column
+    for i in range(9):
+        if board[i][col] == num:
+            return False
+
+    # Find the 3x3 subgrid
+    start_row = (row // 3) * 3
+    start_col = (col // 3) * 3
+
+    # Check 3x3 subgrid
+    for i in range(start_row, start_row + 3):
+        for j in range(start_col, start_col + 3):
+            if board[i][j] == num:
+                return False
+
+    return True
+
+
+# Sudoku board
+board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+
+# Given input
+row = 0
+col = 2
+num = 4
+
+# Check placement
+if is_safe(board, row, col, num):
+    print("Safe Placement: YES")
+else:
+    print("Safe Placement: NO")
