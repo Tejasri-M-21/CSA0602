@@ -1,0 +1,74 @@
+import heapq
+
+def dijkstra(n, edges, source):
+    # Create adjacency list
+    graph = [[] for _ in range(n)]
+
+    for u, v, w in edges:
+        graph[u].append((v, w))
+
+    # Distance and parent arrays
+    dist = [float('inf')] * n
+    parent = [-1] * n
+
+    dist[source] = 0
+
+    # Priority queue: (distance, vertex)
+    pq = [(0, source)]
+
+    while pq:
+        current_dist, u = heapq.heappop(pq)
+
+        if current_dist > dist[u]:
+            continue
+
+        for v, weight in graph[u]:
+            new_dist = current_dist + weight
+
+            if new_dist < dist[v]:
+                dist[v] = new_dist
+                parent[v] = u
+                heapq.heappush(pq, (new_dist, v))
+
+    return dist, parent
+
+
+def get_path(parent, source, destination):
+    path = []
+    current = destination
+
+    while current != -1:
+        path.append(current)
+        current = parent[current]
+
+    path.reverse()
+
+    if path[0] != source:
+        return None
+
+    return path
+
+
+# Input
+n = 5
+source = 0
+
+edges = [
+    (0, 1, 4),
+    (0, 2, 1),
+    (2, 1, 2),
+    (1, 3, 1),
+    (2, 3, 5),
+    (3, 4, 3)
+]
+
+# Run Dijkstra
+dist, parent = dijkstra(n, edges, source)
+
+# Output distances
+print("Distances from 0:", dist)
+
+# Print paths
+for destination in range(1, n):
+    path = get_path(parent, source, destination)
+    print(f"Path to {destination}:", " → ".join(map(str, path)))
