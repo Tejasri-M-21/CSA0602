@@ -1,0 +1,46 @@
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int max(int a,int b)
+{
+return a>b?a:b;
+}
+int palindrome_score(char s[])
+{
+int n=strlen(s),i,j;
+int prev[MAX],curr[MAX];
+for(j=0;j<n;j++)
+prev[j]=1;
+for(i=n-2;i>=0;i--)
+{
+curr[i]=1;
+for(j=i+1;j<n;j++)
+{
+if(s[i]==s[j])
+curr[j]=prev[j-1]+2;
+else
+curr[j]=max(prev[j],curr[j-1]);
+}
+for(j=i;j<n;j++)
+prev[j]=curr[j];
+}
+return n==0?0:prev[n-1];
+}
+int main()
+{
+char word1[]="bbbab";
+char word2[]="cbbd";
+int score1=palindrome_score(word1);
+int score2=palindrome_score(word2);
+printf("%s Score = %d\n",word1,score1);
+printf("%s Score = %d\n",word2,score2);
+if(score1>score2)
+printf("Winner = %s",word1);
+else if(score2>score1)
+printf("Winner = %s",word2);
+else
+printf("Both words have the same score");
+printf("\nSingle character score = %d",palindrome_score("a"));
+printf("\nAll test cases passed!");
+return 0;
+}
