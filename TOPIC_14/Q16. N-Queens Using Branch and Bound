@@ -1,0 +1,57 @@
+def solve_n_queens(n):
+    board = [["."] * n for _ in range(n)]
+
+    # Branch and Bound arrays
+    columns = [False] * n
+    diag1 = [False] * (2 * n - 1)  # row - col
+    diag2 = [False] * (2 * n - 1)  # row + col
+
+    def backtrack(row):
+        # All queens are placed
+        if row == n:
+            return True
+
+        for col in range(n):
+            d1 = row - col + (n - 1)
+            d2 = row + col
+
+            # Branch and Bound:
+            # Skip this position if it is attacked
+            if columns[col] or diag1[d1] or diag2[d2]:
+                continue
+
+            # Place queen
+            board[row][col] = "Q"
+            columns[col] = True
+            diag1[d1] = True
+            diag2[d2] = True
+
+            # Move to next row
+            if backtrack(row + 1):
+                return True
+
+            # Backtrack
+            board[row][col] = "."
+            columns[col] = False
+            diag1[d1] = False
+            diag2[d2] = False
+
+        return False
+
+    if backtrack(0):
+        return board
+
+    return None
+
+
+# Input
+n = 8
+
+solution = solve_n_queens(n)
+
+if solution:
+    print("One Valid Solution:")
+    for row in solution:
+        print(" ".join(row))
+else:
+    print("No solution exists.")
