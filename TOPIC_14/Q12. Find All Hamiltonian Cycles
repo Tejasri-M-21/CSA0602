@@ -1,0 +1,66 @@
+def is_safe(vertex, graph, path):
+    # Check connection with the previous vertex
+    if graph[path[-1]][vertex] == 0:
+        return False
+
+    # Check whether vertex is already visited
+    if vertex in path:
+        return False
+
+    return True
+
+
+def find_all_cycles(graph, path, n, cycles):
+    # All vertices are included
+    if len(path) == n:
+        # Check if last vertex connects back to first
+        if graph[path[-1]][path[0]] == 1:
+
+            # Avoid reverse duplicate cycles
+            reverse_path = [path[0]] + path[:0:-1]
+
+            if reverse_path not in cycles:
+                cycles.append(path.copy())
+
+        return
+
+    # Try all possible vertices
+    for vertex in range(1, n):
+        if is_safe(vertex, graph, path):
+            path.append(vertex)
+
+            find_all_cycles(graph, path, n, cycles)
+
+            # Backtrack
+            path.pop()
+
+
+# Input: Complete Graph K4
+n = 4
+
+edges = [
+    (0, 1), (0, 2), (0, 3),
+    (1, 2), (1, 3),
+    (2, 3)
+]
+
+# Create adjacency matrix
+graph = [[0] * n for _ in range(n)]
+
+for u, v in edges:
+    graph[u][v] = 1
+    graph[v][u] = 1
+
+# Start from vertex 0
+cycles = []
+path = [0]
+
+find_all_cycles(graph, path, n, cycles)
+
+# Display results
+print("Hamiltonian Cycles:")
+
+for cycle in cycles:
+    print(" → ".join(map(str, cycle)) + " → 0")
+
+print("Total Cycles =", len(cycles))
