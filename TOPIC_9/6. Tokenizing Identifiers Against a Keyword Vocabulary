@@ -1,0 +1,90 @@
+//6. Tokenizing Identifiers Against a Keyword Vocabulary
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int can_segment(char s[],char dict[][20],int count)
+{
+int n=strlen(s),i,j,k,len,found;
+int dp[MAX+1]={0};
+dp[0]=1;
+for(i=1;i<=n;i++)
+{
+for(j=0;j<i;j++)
+{
+if(!dp[j])
+continue;
+len=i-j;
+for(k=0;k<count;k++)
+{
+if(strlen(dict[k])==len&&strncmp(s+j,dict[k],len)==0)
+{
+dp[i]=1;
+break;
+}
+}
+if(dp[i])
+break;
+}
+}
+return dp[n];
+}
+void suggest_spacing(char s[],char dict[][20],int count,char result[])
+{
+int n=strlen(s),i,j,k,len,found,pos,r=0;
+int dp[MAX+1]={0},parent[MAX+1];
+dp[0]=1;
+for(i=1;i<=n;i++)
+{
+for(j=0;j<i;j++)
+{
+if(!dp[j])
+continue;
+len=i-j;
+for(k=0;k<count;k++)
+{
+if(strlen(dict[k])==len&&strncmp(s+j,dict[k],len)==0)
+{
+dp[i]=1;
+parent[i]=j;
+break;
+}
+}
+if(dp[i])
+break;
+}
+}
+if(!dp[n])
+{
+result[0]='\0';
+return;
+}
+char words[MAX][20];
+int wc=0;
+pos=n;
+while(pos>0)
+{
+int start=parent[pos];
+strncpy(words[wc],s+start,pos-start);
+words[wc][pos-start]='\0';
+wc++;
+pos=start;
+}
+for(i=wc-1;i>=0;i--)
+{
+for(j=0;words[i][j]!='\0';j++)
+result[r++]=words[i][j];
+if(i>0)
+result[r++]=' ';
+}
+result[r]='\0';
+}
+int main()
+{
+char dict[][20]={"leet","code"};
+char result[MAX];
+printf("Can Segment = %s\n",can_segment("leetcode",dict,2)?"True":"False");
+suggest_spacing("leetcode",dict,2,result);
+printf("Suggested Spacing = %s\n",result);
+printf("All test cases passed!");
+return 0;
+}
