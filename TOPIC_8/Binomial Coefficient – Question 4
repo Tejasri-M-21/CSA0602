@@ -1,0 +1,27 @@
+def binomial_coefficient(n, r):
+    # Create DP table
+    dp = [[0] * (r + 1) for _ in range(n + 1)]
+
+    # Calculate values using Pascal's Identity
+    for i in range(n + 1):
+        dp[i][0] = 1
+
+        for j in range(1, min(i, r) + 1):
+            if j == i:
+                dp[i][j] = 1
+            else:
+                dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+
+    return dp[n][r]
+
+
+# Input
+n = 10
+r = 4
+
+# Calculate Binomial Coefficient
+result = binomial_coefficient(n, r)
+
+print("n =", n)
+print("r =", r)
+print("C(10,4) =", result)
