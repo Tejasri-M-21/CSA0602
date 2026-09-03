@@ -1,0 +1,59 @@
+def is_safe(board, row, col, n):
+    # Check column
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
+
+    # Check upper-left diagonal
+    i, j = row - 1, col - 1
+    while i >= 0 and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i -= 1
+        j -= 1
+
+    # Check upper-right diagonal
+    i, j = row - 1, col + 1
+    while i >= 0 and j < n:
+        if board[i][j] == 1:
+            return False
+        i -= 1
+        j += 1
+
+    return True
+
+
+def solve_n_queens(board, row, n, solutions):
+    # All queens placed
+    if row == n:
+        solutions.append([r[:] for r in board])
+        return
+
+    # Try every column
+    for col in range(n):
+        if is_safe(board, row, col, n):
+            board[row][col] = 1
+
+            # Place queen in next row
+            solve_n_queens(board, row + 1, n, solutions)
+
+            # Backtrack
+            board[row][col] = 0
+
+
+# Input
+n = int(input("Enter N: "))
+
+board = [[0 for _ in range(n)] for _ in range(n)]
+solutions = []
+
+# Find all solutions
+solve_n_queens(board, 0, n, solutions)
+
+# Display results
+print("\nTotal Solutions =", len(solutions))
+
+for i, solution in enumerate(solutions, 1):
+    print(f"\nSolution {i}:")
+    for row in solution:
+        print(*row)
