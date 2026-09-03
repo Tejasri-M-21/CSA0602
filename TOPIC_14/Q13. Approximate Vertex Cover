@@ -1,0 +1,42 @@
+def approximate_vertex_cover(vertices, edges):
+    # Make a copy of edges
+    remaining_edges = edges.copy()
+
+    vertex_cover = set()
+
+    while remaining_edges:
+        # Select the first uncovered edge
+        u, v = remaining_edges[0]
+
+        # Add both endpoints to the vertex cover
+        vertex_cover.add(u)
+        vertex_cover.add(v)
+
+        # Remove all edges covered by u or v
+        remaining_edges = [
+            (a, b)
+            for a, b in remaining_edges
+            if a != u and a != v and b != u and b != v
+        ]
+
+    return vertex_cover
+
+
+# Input
+vertices = 5
+
+edges = [
+    (0, 1),
+    (0, 2),
+    (1, 3),
+    (2, 4)
+]
+
+# Find approximate vertex cover
+cover = approximate_vertex_cover(vertices, edges)
+
+# Display result
+print("Approximate Vertex Cover:")
+print("{" + ",".join(map(str, sorted(cover))) + "}")
+
+print("Cover Size =", len(cover))
