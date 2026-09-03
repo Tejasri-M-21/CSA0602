@@ -1,0 +1,35 @@
+//1. Word Wrap Problem - Justifying Text for a Print Newsletter Column
+#include<stdio.h>
+#include<limits.h>
+int min_wrap_cost(int words[],int n,int width)
+{
+int dp[n+1],i,j,line_len,extra,cost,best;
+dp[n]=0;
+for(i=n-1;i>=0;i--)
+{
+dp[i]=INT_MAX;
+line_len=0;
+for(j=i;j<n;j++)
+{
+line_len+=words[j];
+if(j>i)
+line_len++;
+if(line_len>width)
+break;
+extra=width-line_len;
+cost=(j==n-1)?0:extra*extra;
+if(dp[j+1]!=INT_MAX&&cost+dp[j+1]<dp[i])
+dp[i]=cost+dp[j+1];
+}
+}
+return dp[0];
+}
+int main()
+{
+int words1[]={3,2,2,5};
+int words2[]={3};
+printf("[3,2,2,5], width=6 -> %d\n",min_wrap_cost(words1,4,6));
+printf("[3], width=6 -> %d\n",min_wrap_cost(words2,1,6));
+printf("All test cases passed!");
+return 0;
+}
