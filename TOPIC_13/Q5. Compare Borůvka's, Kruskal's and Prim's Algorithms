@@ -1,0 +1,156 @@
+def boruvka(n, edges):
+    parent = list(range(n))
+    rank = [0] * n
+    mst = []
+    phases = 0
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+
+        if ra == rb:
+            return False
+
+        if rank[ra] < rank[rb]:
+            parent[ra] = rb
+        elif rank[ra] > rank[rb]:
+            parent[rb] = ra
+        else:
+            parent[rb] = ra
+            rank[ra] += 1
+
+        return True
+
+    while len(mst) < n - 1:
+        phases += 1
+        cheapest = [-1] * n
+
+        for i, (u, v, w) in enumerate(edges):
+            cu, cv = find(u), find(v)
+
+            if cu == cv:
+                continue
+
+            if cheapest[cu] == -1 or w < edges[cheapest[cu]][2]:
+                cheapest[cu] = i
+
+            if cheapest[cv] == -1 or w < edges[cheapest[cv]][2]:
+                cheapest[cv] = i
+
+        for i in cheapest:
+            if i != -1:
+                u, v, w = edges[i]
+                if union(u, v):
+                    mst.append((u, v, w))
+
+    return mst, phases
+
+
+def kruskal(n, edges):
+    parent = list(range(n))
+    rank = [0] * n
+    mst = []
+    selections = 0
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+
+        if ra == rb:
+            return False
+
+        if rank[ra] < rank[rb]:
+            parent[ra] = rb
+        elif rank[ra] > rank[rb]:
+            parent[rb] = ra
+        else:
+            parent[rb] = ra
+            rank[ra] += 1
+
+        return True
+
+    for u, v, w in sorted(edges, key=lambda x: x[2]):
+        if union(u, v):
+            mst.append((u, v, w))
+            selections += 1
+
+            if len(mst) == n - 1:
+                break
+
+    return mst, selections
+
+
+def prim(n, edges):
+    graph = [[] for _ in range(n)]
+
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+
+    visited = [False] * n
+    key = [float('inf')] * n
+    parent = [-1] * n
+
+    key[0] = 0
+    mst = []
+    additions = 0
+
+    for _ in range(n):
+        u = -1
+
+        for v in range(n):
+            if not visited[v] and (u == -1 or key[v] < key[u]):
+                u = v
+
+        visited[u] = True
+        additions += 1
+
+        if parent[u] != -1:
+            mst.append((parent[u], u, key[u]))
+
+        for v, w in graph[u]:
+            if not visited[v] and w < key[v]:
+                key[v] = w
+                parent[v] = u
+
+    return mst, additions
+
+
+# Input
+n = 6
+edges = [
+    (0, 1, 6),
+    (0, 2, 1),
+    (0, 3, 5),
+    (1, 2, 5),
+    (1, 4, 3),
+    (2, 3, 5),
+    (2, 4, 6),
+    (2, 5, 4),
+    (3, 5, 2),
+    (4, 5, 6)
+]
+
+# Run algorithms
+mst_b, phases_b = boruvka(n, edges)
+mst_k, selections_k = kruskal(n, edges)
+mst_p, additions_p = prim(n, edges)
+
+print("Boruvka's MST:", mst_b)
+print("Boruvka's phases:", phases_b)
+
+print("\nKruskal's MST:", mst_k)
+print("Kruskal's edge selections:", selections_k)
+
+print("\nPrim's MST:", mst_p)
+print("Prim's vertex additions:", additions_p)
+
+print("\nMST Weight:", sum(w for _, _, w in mst_b))
