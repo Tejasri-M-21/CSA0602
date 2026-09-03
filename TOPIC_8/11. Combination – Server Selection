@@ -1,0 +1,15 @@
+#include<stdio.h>
+int main()
+{
+int n=8,r=3,i;
+long long fact_n=1,fact_r=1,fact_nr=1,combinations;
+for(i=1;i<=n;i++)
+fact_n*=i;
+for(i=1;i<=r;i++)
+fact_r*=i;
+for(i=1;i<=n-r;i++)
+fact_nr*=i;
+combinations=fact_n/(fact_r*fact_nr);
+printf("Number of Combinations = %lld",combinations);
+return 0;
+}
