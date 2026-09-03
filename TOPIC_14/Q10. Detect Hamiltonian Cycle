@@ -1,0 +1,63 @@
+def is_safe(vertex, graph, path, position, n):
+    # Check if vertex is connected to the previous vertex
+    if graph[path[position - 1]][vertex] == 0:
+        return False
+
+    # Check if vertex is already included
+    if vertex in path:
+        return False
+
+    return True
+
+
+def hamiltonian_cycle_util(graph, path, position, n):
+    # All vertices are included
+    if position == n:
+        # Check if last vertex connects back to first
+        return graph[path[position - 1]][path[0]] == 1
+
+    # Try every vertex
+    for vertex in range(1, n):
+        if is_safe(vertex, graph, path, position, n):
+            path[position] = vertex
+
+            if hamiltonian_cycle_util(graph, path, position + 1, n):
+                return True
+
+            # Backtrack
+            path[position] = -1
+
+    return False
+
+
+def find_hamiltonian_cycle(graph, n):
+    path = [-1] * n
+
+    # Start from vertex 0
+    path[0] = 0
+
+    if hamiltonian_cycle_util(graph, path, 1, n):
+        return path
+
+    return None
+
+
+# Input
+n = 5
+
+graph = [
+    [0, 1, 0, 1, 0],
+    [1, 0, 1, 1, 1],
+    [0, 1, 0, 0, 1],
+    [1, 1, 0, 0, 1],
+    [0, 1, 1, 1, 0]
+]
+
+# Find Hamiltonian Cycle
+cycle = find_hamiltonian_cycle(graph, n)
+
+if cycle:
+    print("Hamiltonian Cycle Exists:")
+    print(" → ".join(map(str, cycle)) + " → " + str(cycle[0]))
+else:
+    print("No Hamiltonian Cycle Exists.")
