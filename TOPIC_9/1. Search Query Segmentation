@@ -1,0 +1,45 @@
+//1. Search Query Segmentation
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int can_segment(char s[],char dict[][20],int count)
+{
+int n=strlen(s),i,j,k,len,found;
+int dp[MAX+1]={0};
+dp[0]=1;
+for(i=1;i<=n;i++)
+{
+for(j=0;j<i;j++)
+{
+if(!dp[j])
+continue;
+len=i-j;
+found=0;
+for(k=0;k<count;k++)
+{
+if(strlen(dict[k])==len&&strncmp(s+j,dict[k],len)==0)
+{
+found=1;
+break;
+}
+}
+if(found)
+{
+dp[i]=1;
+break;
+}
+}
+}
+return dp[n];
+}
+int main()
+{
+char d1[][20]={"leet","code"};
+char d2[][20]={"apple","pen"};
+char d3[][20]={"cats","dog","sand","and","cat"};
+printf("leetcode = %s\n",can_segment("leetcode",d1,2)?"True":"False");
+printf("applepenapple = %s\n",can_segment("applepenapple",d2,2)?"True":"False");
+printf("catsandog = %s\n",can_segment("catsandog",d3,5)?"True":"False");
+printf("All test cases passed!");
+return 0;
+}
