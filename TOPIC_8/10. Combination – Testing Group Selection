@@ -1,0 +1,15 @@
+#include<stdio.h>
+int main()
+{
+int n=20,r=6,i;
+long long fact_n=1,fact_r=1,fact_nr=1,groups;
+for(i=1;i<=n;i++)
+fact_n*=i;
+for(i=1;i<=r;i++)
+fact_r*=i;
+for(i=1;i<=n-r;i++)
+fact_nr*=i;
+groups=fact_n/(fact_r*fact_nr);
+printf("Number of Groups = %lld",groups);
+return 0;
+}
