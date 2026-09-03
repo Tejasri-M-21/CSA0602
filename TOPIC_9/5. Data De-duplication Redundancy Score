@@ -1,0 +1,40 @@
+//5. Data De-duplication Redundancy Score
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+int max(int a,int b)
+{
+return a>b?a:b;
+}
+int is_compression_candidate(char s[])
+{
+int n=strlen(s),i,j;
+int prev[MAX],curr[MAX],lps,score;
+if(n==0)
+return 0;
+for(j=0;j<n;j++)
+prev[j]=1;
+for(i=n-2;i>=0;i--)
+{
+curr[i]=1;
+for(j=i+1;j<n;j++)
+{
+if(s[i]==s[j])
+curr[j]=prev[j-1]+2;
+else
+curr[j]=max(prev[j],curr[j-1]);
+}
+for(j=i;j<n;j++)
+prev[j]=curr[j];
+}
+lps=prev[n-1];
+score=lps-n/2.0;
+return score>0;
+}
+int main()
+{
+printf("bbbab Compression Candidate = %s\n",is_compression_candidate("bbbab")?"True":"False");
+printf("cbbd Compression Candidate = %s\n",is_compression_candidate("cbbd")?"True":"False");
+printf("All test cases passed!");
+return 0;
+}
