@@ -1,0 +1,44 @@
+def is_safe(board, row, col, n):
+    # Check column
+    for i in range(row):
+        if board[i] == col:
+            return False
+
+    # Check upper-left diagonal
+    for i in range(row):
+        if abs(board[i] - col) == abs(i - row):
+            return False
+
+    return True
+
+
+def count_solutions(board, row, n):
+    # All queens placed successfully
+    if row == n:
+        return 1
+
+    count = 0
+
+    # Try placing queen in every column
+    for col in range(n):
+        if is_safe(board, row, col, n):
+            board[row] = col
+
+            # Count solutions from next row
+            count += count_solutions(board, row + 1, n)
+
+            # Backtrack
+            board[row] = -1
+
+    return count
+
+
+# Input
+n = int(input("Enter N: "))
+
+board = [-1] * n
+
+# Count all solutions
+total = count_solutions(board, 0, n)
+
+print("Total Number of Solutions =", total)
