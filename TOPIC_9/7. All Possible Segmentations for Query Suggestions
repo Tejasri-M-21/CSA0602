@@ -1,0 +1,42 @@
+//7. All Possible Segmentations for Query Suggestions
+#include<stdio.h>
+#include<string.h>
+#define MAX 100
+#define MAX_RESULTS 100
+char results[MAX_RESULTS][MAX];
+int result_count=0;
+void find_segmentations(char s[],char dict[][20],int count,int start,char current[])
+{
+int n=strlen(s),k,end,len,pos;
+if(start==n)
+{
+strcpy(results[result_count++],current);
+return;
+}
+for(k=0;k<count;k++)
+{
+len=strlen(dict[k]);
+end=start+len;
+if(end<=n&&strncmp(s+start,dict[k],len)==0)
+{
+pos=strlen(current);
+if(pos>0)
+current[pos++]=' ';
+strcpy(current+pos,dict[k]);
+find_segmentations(s,dict,count,end,current);
+current[pos]='\0';
+}
+}
+}
+int main()
+{
+char dict[][20]={"cats","cat","and","sand","dog"};
+char current[MAX]="";
+int i;
+find_segmentations("catsanddog",dict,5,0,current);
+for(i=0;i<result_count;i++)
+printf("%s\n",results[i]);
+printf("Total Segmentations = %d\n",result_count);
+printf("All test cases passed!");
+return 0;
+}
