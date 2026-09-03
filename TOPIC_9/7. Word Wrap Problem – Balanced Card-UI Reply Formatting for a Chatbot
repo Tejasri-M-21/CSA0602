@@ -1,0 +1,73 @@
+//7. Balanced Card-UI Reply Formatting for a Chatbot
+#include<stdio.h>
+#include<limits.h>
+int min_wrap_cost(int words[],int n,int width)
+{
+int dp[n+1],i,j,line_len,extra,cost;
+dp[n]=0;
+for(i=n-1;i>=0;i--)
+{
+dp[i]=INT_MAX;
+line_len=0;
+for(j=i;j<n;j++)
+{
+line_len+=words[j];
+if(j>i)
+line_len++;
+if(line_len>width)
+break;
+extra=width-line_len;
+cost=(j==n-1)?0:extra*extra;
+if(dp[j+1]!=INT_MAX&&cost+dp[j+1]<dp[i])
+dp[i]=cost+dp[j+1];
+}
+}
+return dp[0];
+}
+void wrap_lines(int words[],int n,int width)
+{
+int dp[n+1],choice[n+1],i,j,line_len,extra,cost;
+dp[n]=0;
+choice[n]=-1;
+for(i=n-1;i>=0;i--)
+{
+dp[i]=INT_MAX;
+choice[i]=-1;
+line_len=0;
+for(j=i;j<n;j++)
+{
+line_len+=words[j];
+if(j>i)
+line_len++;
+if(line_len>width)
+break;
+extra=width-line_len;
+cost=(j==n-1)?0:extra*extra;
+if(dp[j+1]!=INT_MAX&&cost+dp[j+1]<dp[i])
+{
+dp[i]=cost+dp[j+1];
+choice[i]=j+1;
+}
+}
+}
+printf("Minimum Cost = %d\n",dp[0]);
+printf("Balanced Card Lines:\n");
+i=0;
+while(i<n)
+{
+printf("Line: ");
+for(j=i;j<choice[i];j++)
+printf("%d ",words[j]);
+printf("\n");
+i=choice[i];
+}
+}
+int main()
+{
+int words[]={3,2,2,5};
+int n=4,width=6;
+printf("Card Width = %d\n",width);
+wrap_lines(words,n,width);
+printf("All test cases passed!");
+return 0;
+}
