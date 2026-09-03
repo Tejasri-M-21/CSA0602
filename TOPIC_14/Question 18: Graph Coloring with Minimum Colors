@@ -1,0 +1,51 @@
+def greedy_coloring(vertices, edges):
+    # Create adjacency list
+    graph = [[] for _ in range(vertices)]
+
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Color array
+    color = [-1] * vertices
+
+    # Assign colors greedily
+    for vertex in range(vertices):
+        used_colors = set()
+
+        # Check colors of adjacent vertices
+        for neighbor in graph[vertex]:
+            if color[neighbor] != -1:
+                used_colors.add(color[neighbor])
+
+        # Find the smallest available color
+        c = 1
+        while c in used_colors:
+            c += 1
+
+        color[vertex] = c
+
+    return color
+
+
+# Input
+vertices = 5
+
+edges = [
+    (0, 1),
+    (0, 2),
+    (1, 2),
+    (1, 3),
+    (2, 4)
+]
+
+# Apply Greedy Coloring
+colors = greedy_coloring(vertices, edges)
+
+# Display result
+print("Greedy Coloring:")
+
+for vertex in range(vertices):
+    print(f"Vertex {vertex} → Color {colors[vertex]}")
+
+print("Number of Colors Used =", max(colors))
