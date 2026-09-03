@@ -1,0 +1,92 @@
+import heapq
+
+def dijkstra(n, edges, source):
+    # Create adjacency list
+    graph = [[] for _ in range(n)]
+
+    for u, v, weight in edges:
+        graph[u].append((v, weight))
+
+    # Distance array
+    distance = [float('inf')] * n
+
+    # Parent array for path reconstruction
+    parent = [-1] * n
+
+    distance[source] = 0
+
+    # Priority queue
+    pq = [(0, source)]
+
+    while pq:
+        current_distance, u = heapq.heappop(pq)
+
+        # Ignore outdated entries
+        if current_distance > distance[u]:
+            continue
+
+        # Relax adjacent vertices
+        for v, weight in graph[u]:
+            new_distance = current_distance + weight
+
+            if new_distance < distance[v]:
+                distance[v] = new_distance
+                parent[v] = u
+                heapq.heappush(pq, (new_distance, v))
+
+    return distance, parent
+
+
+def reconstruct_path(parent, source, destination):
+    path = []
+    current = destination
+
+    while current != -1:
+        path.append(current)
+        current = parent[current]
+
+    path.reverse()
+
+    if path[0] != source:
+        return None
+
+    return path
+
+
+# Input
+n = 6
+source = 0
+
+edges = [
+    (0, 1, 2),
+    (0, 2, 4),
+    (1, 2, 1),
+    (1, 3, 7),
+    (2, 4, 3),
+    (3, 5, 1),
+    (4, 3, 2),
+    (4, 5, 5)
+]
+
+# Run Dijkstra
+distance, parent = dijkstra(n, edges, source)
+
+# Display shortest distances
+print("Distances:", distance)
+
+# Find hardest vertex to reach
+hardest_vertex = -1
+max_distance = -1
+
+for vertex in range(n):
+    if distance[vertex] != float('inf') and distance[vertex] > max_distance:
+        max_distance = distance[vertex]
+        hardest_vertex = vertex
+
+print("Hardest vertex to reach:", hardest_vertex)
+print("Distance =", max_distance)
+
+# Reconstruct path to hardest vertex
+path = reconstruct_path(parent, source, hardest_vertex)
+
+print("Path to", hardest_vertex, ":", " → ".join(map(str, path)))
