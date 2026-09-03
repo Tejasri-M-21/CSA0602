@@ -1,0 +1,81 @@
+# Boruvka's Algorithm
+
+n = 4
+edges = [
+    (0, 1, 10),
+    (0, 2, 6),
+    (0, 3, 5),
+    (1, 3, 15),
+    (2, 3, 4)
+]
+
+parent = list(range(n))
+
+
+def find(x):
+    if parent[x] != x:
+        parent[x] = find(parent[x])
+    return parent[x]
+
+
+def union(a, b):
+    root_a = find(a)
+    root_b = find(b)
+
+    if root_a != root_b:
+        parent[root_b] = root_a
+        return True
+
+    return False
+
+
+mst = []
+mst_weight = 0
+
+pass_no = 1
+
+while len(mst) < n - 1:
+
+    cheapest = [-1] * n
+
+    # Find cheapest edge for every component
+    for i, (u, v, w) in enumerate(edges):
+        set_u = find(u)
+        set_v = find(v)
+
+        if set_u == set_v:
+            continue
+
+        if cheapest[set_u] == -1 or edges[cheapest[set_u]][2] > w:
+            cheapest[set_u] = i
+
+        if cheapest[set_v] == -1 or edges[cheapest[set_v]][2] > w:
+            cheapest[set_v] = i
+
+    print("Pass", pass_no, "cheapest edges:")
+
+    # Display cheapest edges
+    for i in range(n):
+        if cheapest[i] != -1:
+            u, v, w = edges[cheapest[i]]
+            print(
+                f"Component {{{i}}}: "
+                f"cheapest = ({u},{v},{w})"
+            )
+
+    # Add cheapest edges to MST
+    for i in range(n):
+        if cheapest[i] != -1:
+            u, v, w = edges[cheapest[i]]
+
+            if union(u, v):
+                mst.append((u, v, w))
+                mst_weight += w
+
+    print()
+
+    pass_no += 1
+
+
+print("MST edges:", mst)
+print("MST weight:", mst_weight)
